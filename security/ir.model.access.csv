@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+chiphi_manager,Manager,model_hhd_chiphi,group_manager,1,1,1,1
+chiphi_staff,Staff,model_hhd_chiphi,group_staff,1,0,1,0
+invoice_manager,Manager,model_account_invoice,group_manager,1,1,1,1
+invoice_staff,Staff,model_account_invoice,group_staff,1,0,0,0

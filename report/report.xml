@@ -1,0 +1,35 @@
+<odoo>
+
+    <report
+        id="report_chiphi"
+        model="hhd.chiphi"
+        string="Chi phí Report"
+        name="hhd_cost_recovery.report_chiphi_view"
+        file="hhd_cost_recovery.report_chiphi"
+        report_type="qweb-pdf" />
+
+    <template id="report_chiphi_view">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h1 t-field="doc.name"/>
+                        <p>From <span t-field="doc.start_date"/> to <span t-field="doc.end_date"/></p>
+                        <h3>Hóa đơn:</h3>
+                            <h4 t-field="doc.user_id"/>
+                            <h4 t-field="doc.doitac_id"/>
+                            <h4 t-field="doc.loaichiphi"/>
+                        <ul>
+                            <t t-foreach="doc.hoadon_ids" t-as="hoadon">
+                                <li><span t-field="hoadon.name"/></li>
+                                <li><span t-field="hoadon.thanhtien"/></li>
+                            </t>
+                        </ul>
+                        <h2 t-field="doc.tong_tien"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

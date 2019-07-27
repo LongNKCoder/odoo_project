@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="chiphi_view">
+        <field name="name">chiphi.form</field>
+        <field name="model">hhd.chiphi</field>
+        <field name="arch" type="xml">
+            <form String="Chi phí">
+                <header>
+                    <button name="action_submit" string="Submit" class="oe_highlight" trang_thai_action="submit"
+                            type="object"/>
+                    <button name="action_approve" string="Approve" class="oe_highlight" trang_thai_action="approve"
+                            type="object" groups="hhd_cost_recovery.group_manager"/>
+                    <button name="action_done" string="Done" class="oe_highlight" trang_thai_action="done" type="object" groups="hhd_cost_recovery.group_manager"/>
+                    <button name="%(launch_reason_wizard)d" string="Refuse" type="action" groups="hhd_cost_recovery.group_manager"/>
+                    <field name="trang_thai_action" widget="statusbar"
+                           statusbar_visible="draft,submit,approve,done"/>
+                </header>
+                <group>
+                    <group string="Chi tiết">
+                        <field name="name"/>
+                        <field name="user_id"/>
+                        <field name="doitac_id"/>
+                        <field name="loaichiphi"/>
+                    </group>
+                    <group string="Ngày chi phí">
+                        <field name="start_date"></field>
+                        <field name="duration"></field>
+                        <field name="end_date"></field>
+                    </group>
+                    <field name="hoadon_ids"></field>
+                </group>
+                <group>
+                    <field name="tong_tien"></field>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_chiphi_kanban">
+        <field name="name">chiphi.kanban</field>
+        <field name="model">hhd.chiphi</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="loaichiphi">
+                <field name="color"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div
+                                t-attf-class="oe_kanban_color_{{kanban_getcolor(record.color.raw_value)}}
+                                                  oe_kanban_global_click_edit oe_semantic_html_override
+                                                  oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
+                            <div class="oe_dropdown_kanban">
+                                <div class="oe_dropdown_toggle">
+                                    <i class="fa fa-bars fa-lg" title="Manage" aria-label="Manage"/>
+                                    <ul class="oe_dropdown_menu">
+                                        <li>
+                                            <a type="delete">Delete</a>
+                                        </li>
+                                        <li>
+                                            <ul class="oe_kanban_colorpicker"
+                                                data-field="color"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="oe_clear"></div>
+                            </div>
+                            <div t-attf-class="oe_kanban_content">
+                                <!-- title -->
+                                Tên chi phí:
+                                <field name="name"/>
+                                <br/>
+                                Hóa đơn:
+                                <field name="hoadon_ids"/>
+                                <br/>
+                                Nhân viên
+                                <field name="user_id"/>
+                                <br/>
+                                Tổng tiền:
+                                <field name="tong_tien"/>
+                                <br/>
+                                Start date:
+                                <field name="start_date"/>
+                                <br/>
+                                duration:
+                                <field name="duration"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="chiphi_graph_view">
+        <field name="name">chiphi.graph</field>
+        <field name="model">hhd.chiphi</field>
+        <field name="arch" type="xml">
+            <graph string="Tổng tiền của chi phí">
+                <field name="name"/>
+                <field name="hoadon_ids"/>
+                <field name="tong_tien" type="row"/>
+            </graph>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="chiphi_list_action">
+        <field name="name">Chi Phí</field>
+        <field name="res_model">hhd.chiphi</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,calendar,graph,kanban</field>
+        <field name="context" eval="{'search_default_my_chiphi': 1}"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create the first chi phí
+            </p>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="chiphi_tree_view">
+        <field name="name">chiphi.tree</field>
+        <field name="model">hhd.chiphi</field>
+        <field name="arch" type="xml">
+            <tree string="Chi phí Tree">
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="doitac_id"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="reason"/>
+                <field name="tong_tien"/>
+                <field name="trang_thai_action"/>
+                <field name="trang_thai_state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="ir_cron_request_sla_update_state" model="ir.cron">
+        <field name="name">Generic Request SLA: Update SLA State</field>
+        <field name="state">code</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_hhd_chiphi"/>
+        <field name="code">model._expried_check()</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record model="ir.ui.view" id="chiphi_calendar_view">
+        <field name="name">chiphi.calendar</field>
+        <field name="model">hhd.chiphi</field>
+        <field name="arch" type="xml">
+            <calendar string="Chiphi Calendar" date_start="start_date" date_stop="end_date" color="user_id">
+                <field name="name"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="chiphi_group_view" model="ir.ui.view">
+        <field name="name">chiphi.group.view</field>
+        <field name="model">hhd.chiphi</field>
+        <field name="arch" type="xml">
+            <search string="Group">
+                <group expand="1" string="Group by ..">
+                    <filter name="user_id" string="Nhân viên" domain="[]"
+                            context="{'g roup_by':'user_id'}"></filter>
+                    <filter name="doitac_id" string="Đối tác" domain="[]" context="{'group_by':'doitac_id'}"></filter>
+                    <filter name="loaichiphi" string="Loại chi phí" domain="[]"
+                            context="{'group_by':'loaichiphi'}"></filter>
+                </group>
+                <group expand="2" string="Group by ..">
+                    <filter name="filter_create_date" date="start_date" string="Ngày bắt đầu"></filter>
+                </group>
+                <filter string="Tháng Trước" name="thangtruoc_filter"
+                        domain="['&#38;',('start_date','&gt;=',(context_today()-relativedelta(months=1)).strftime('%Y-%m-01'))
+                ,('start_date','&lt;',(context_today().strftime('%Y-%m-01')))
+                ]"/>
+                <filter string="Tháng Này" name="thangnay_filter"
+                        domain="['&#38;',('start_date','&gt;=',(context_today().strftime('%Y-%m-01'))),
+                ('start_date','&lt;',(context_today()+relativedelta(months=1)).strftime('%Y-%m-01'))
+                ]"/>
+                <filter string="Tuần Trước" name="tuantruoc_filter" domain="['&#38;',('start_date', '&gt;=', ((context_today()+relativedelta(weeks=-2,days=1, weekday=0)).strftime('%Y-%m-%d'))),
+                ('start_date', '&lt;=', ((context_today()+relativedelta(weeks=-1,weekday=6)).strftime('%Y-%m-%d')))]"/>
+                <filter string="Tuần Này" name="tuannay_filter" domain="['&#38;',('start_date', '&lt;=', ((context_today()+relativedelta(weekday=6)).strftime('%Y-%m-%d'))),
+                ('start_date', '&gt;=', ((context_today()-relativedelta(weeks=1, weekday=0)).strftime('%Y-%m-%d')))]"
+                        context="{'group_by':'start_date'}"/>
+            </search>
+        </field>
+    </record>
+
+    <menuitem id="main_hhd_cost_recovery_menu" name="Chi Phí"/>
+    <menuitem id="hhd_cost_recovery_menu" name="Chi Phí List"
+              parent="main_hhd_cost_recovery_menu"/>
+    <menuitem id="chiphi_menu" name="Chi Phí" parent="hhd_cost_recovery_menu"
+              action="chiphi_list_action"/>
+</odoo>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="nhanvien_form_view">
+        <field name="model">res.users</field>
+        <field name="name">hhd.nhanvien.form</field>
+        <field name="inherit_id" ref="base.view_users_simple_form"/>
+        <field name="arch" type="xml">
+            <group>
+                <field name="nhanvien"></field>
+            </group>
+        </field>
+    </record>
+
+    <record id="nhanvien_search_view" model="ir.ui.view">
+        <field name="name">hhd.nhanvien.search.view</field>
+        <field name="model">res.users</field>
+        <field name="arch" type="xml">
+            <search string="Nhân viên search">
+                <group expand="1" string="Greoup by ..">
+                    <filter name="name" string="Name" domain="[]" context="{'group_by':'name'}"></filter>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="dslienlac_action">
+        <field name="name">Contacts</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="configuration_menu" name="Configuration"
+              parent="main_hhd_cost_recovery_menu"/>
+    <menuitem id="contact_menu" name="Contacts"
+              parent="hhd_cost_recovery_menu"
+              action="dslienlac_action"/>
+
+</odoo>

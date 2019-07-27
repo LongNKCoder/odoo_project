@@ -1,0 +1,13 @@
+<odoo>
+    <record model="ir.ui.view" id="wizard_chiphi_form_view">
+        <field name="name">wizard.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='preview_invoice']" position="after">
+                <button string="test" type="action" name="%(launch_chiphi_wizard)d" groups="hhd_cost_recovery.group_manager"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

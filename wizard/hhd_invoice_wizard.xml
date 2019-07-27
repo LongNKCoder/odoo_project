@@ -1,0 +1,37 @@
+<odoo>
+    <record model="ir.ui.view" id="wizard_invoice_form_view">
+        <field name="name">wizard.form</field>
+        <field name="model">hhd.chiphi.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Thêm đối tượng">
+                <group>
+                    <field name="user_id"/>
+                    <field name="doitac_id"/>
+                </group>
+                <group>
+                    <field name="chiphi_id"/>
+                </group>
+                <footer>
+                    <button name="save_chiphi" type="object"
+                            string="Tìm Kiếm" class="oe_highlight"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="test" model="ir.actions.act_window">
+        <field name="name">Chi phí</field>
+        <field name="res_model">hhd.chiphi.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="wizard_invoice_form_view"/>
+        <field name="target">new</field>
+    </record>
+
+    <act_window id="launch_chiphi_wizard"
+                    name="Thêm chi phí"
+                    res_model="hhd.chiphi.wizard"
+                    view_mode="form"
+                    target="new"/>
+</odoo>

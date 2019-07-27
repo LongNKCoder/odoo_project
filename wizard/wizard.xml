@@ -1,0 +1,26 @@
+<odoo>
+
+    <record model="ir.ui.view" id="wizard_form_view">
+            <field name="name">wizard.form</field>
+            <field name="model">hhd.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Thêm lý do">
+                    <group>
+                        <field name="reason"/>
+                    </group>
+                    <footer>
+                        <button name="post_reason" type="object"
+                                string="Lý do" class="oe_highlight"/>
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="launch_reason_wizard"
+                    name="Thêm lý do"
+                    src_model="hhd.chiphi"
+                    res_model="hhd.wizard"
+                    view_mode="form"
+                    target="new"/>
+</odoo>

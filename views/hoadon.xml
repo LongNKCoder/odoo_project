@@ -1,0 +1,34 @@
+<odoo>
+    <record model="ir.ui.view" id="hoadon_form_view">
+        <fieldd name="model">hhd.hoadon</fieldd>
+        <field name="name">hoadon.form</field>
+        <field name="arch" type="xml">
+            <form string="Hóa Đơn Form">
+                <sheet>
+                    <group>
+                        <group string="Chi tiết">
+                            <field name="name"/>
+                            <field name="thanhtien"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="hoadon_list_action">
+        <field name="name">hoadon</field>
+        <field name="res_model">hhd.hoadon</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form,tree</field>
+    </record>
+    <record model="ir.ui.view" id="hoadon_tree_view">
+        <field name="name">hoadon.tree</field>
+        <field name="model">hhd.hoadon</field>
+        <field name="arch" type="xml">
+            <tree string="Hóa đơn danh sách">
+                <field name="name"/>
+                <field name="thanhtien"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

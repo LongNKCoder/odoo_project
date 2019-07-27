@@ -1,0 +1,124 @@
+<odoo>
+    <record model="ir.ui.view" id="mass_chiphi_datetodate_report_wizard">
+        <field name="name">Mass Chi Phí Report</field>
+        <field name="model">report.mass.chiphi</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Mass Chi Phi Report">
+                <group>
+                    <group>
+                        <field name="date_start"/>
+                    </group>
+                    <group>
+                        <field name="date_end"/>
+                    </group>
+                    <group>
+                        <field name="user_id"/>
+                    </group>
+                    <group>
+                        <field name="doitac_id"/>
+                    </group>
+                    <group>
+                        <field name="trang_thai_state"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="get_report" string="Get Report" type="object" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="action_wizard"
+                name="Mass Chi Phi Report"
+                res_model="report.mass.chiphi"
+                view_mode="form"
+                target="new"/>
+
+    <menuitem action="action_wizard"
+    id="menu_mass_chiphi_datetodate_report_wizard"
+    parent="main_hhd_cost_recovery_menu"/>
+
+    <record model="report.paperformat" id="paperformat_mass_chiphi_report">
+        <field name="name">paperformat.mass.chiphi.report</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_width">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">30</field>
+        <field name="margin_right">5</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">20</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <report id="mass_chiphi_report"
+            model="report.mass.chiphi"
+            string="Mass Chiphi Report"
+            report_type="qweb-pdf"
+            name="hhd_cost_recovery.mass_chiphi_report_view"
+            paperformat="paperformat_mass_chiphi_report"
+            menu="False"/>
+
+        <template id="mass_chiphi_report_view">
+        <t t-call="web.html_container">
+            <div class="header" style="border-bottom: 2px solid black">
+                <h3 class="text-center">Mass Chiphi Report</h3>
+                <h4 class="text-center">
+                    <strong>From</strong>:
+                    <t t-esc="date_start"/>
+                    <strong>To</strong>:
+                    <t t-esc="date_end"/>
+                </h4>
+            </div>
+            <div class="article">
+                <table class="table table-condensed table-bordered" style="width: 100%">
+                    <thead>
+                        <th class="text-center" >Chi phí</th>
+                        <th class="text-center" >Tổng tiền</th>
+                        <th class="text-center" >Nhân viên</th>
+                        <th class="text-center" >Đối tác</th>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="docs" t-as="doc">
+                            <tr>
+                                <td>
+                                    <span t-esc="doc['chiphi_name']"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="doc['chiphi_nhanvien']"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="doc['chiphi_doitac']"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="doc['chiphi_tongtien']"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+            <div class="footer">
+                <div class="row text-center" style="border-top: 1px solid black;">
+                    <div class="col col-3 offset-9 text-right">
+                        <ul class="list-inline mt-2">
+                            <li class="list-inline-item">Page:</li>
+                            <li class="list-inline-item">
+                                <span class="page"/>
+                            </li>
+                            <li class="list-inline-item">/</li>
+                            <li class="list-inline-item">
+                                <span class="topage"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
